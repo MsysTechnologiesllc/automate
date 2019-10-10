@@ -176,7 +176,7 @@ func getGoDepInfo(path string) (GoDepInfo, error) {
 	path = strings.TrimLeft(path, "/")
 	goPkgPath := fmt.Sprintf("./%s/...", path)
 	output, err := command.Output("go",
-		command.Args("list", "-f", "{{join .Deps \"\\n\"}}", goPkgPath),
+		command.Args("list", "-mod=vendor", "-f", "{{join .Deps \"\\n\"}}", goPkgPath),
 		command.Envvar("GOOS", "linux"),
 	)
 	if err != nil {
