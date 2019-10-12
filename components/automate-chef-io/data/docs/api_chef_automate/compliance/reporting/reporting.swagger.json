@@ -17,7 +17,8 @@
   "paths": {
     "/compliance/reporting/controls": {
       "post": {
-        "summary": "should cover /controls\nThis api is useful for getting a limited list of control items for latest runs. It also honors all reporting filters",
+        "summary": "List controls",
+        "description": "List all controls optionally using filters. This is some more text to see how much stuff\nsurvives proto compilation.\n\nHere is more text. This is yet more text.\n\nHere is some markdown:\n\n# Table\n| Syntax | Description |\n| --- | --- |\n| Header | Title |\n| Paragraph | Text |\n\n# List\n\n1. First item\n2. Second item\n3. Third item\n\n- First item\n- Second item\n- Third item\n\n# Code block\n\n```\n{\n\"firstName\": \"John\",\n\"lastName\": \"Smith\",\n\"age\": 25\n}\n```",
         "operationId": "ListControlItems",
         "responses": {
           "200": {
@@ -38,7 +39,7 @@
           }
         ],
         "tags": [
-          "ReportingService"
+          "Compliance Reporting Controls"
         ]
       }
     },

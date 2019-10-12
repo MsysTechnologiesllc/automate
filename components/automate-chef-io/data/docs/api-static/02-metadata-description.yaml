@@ -1,0 +1,30 @@
+info:
+  description: |
+    This is an example of the overall API description.
+
+    # Table
+
+    | Syntax | Description |
+    | --- | --- |
+    | Header | Title |
+    | Paragraph | Text |
+
+    # List
+
+    1. First item
+    2. Second item
+    3. Third item
+
+    - First item
+    - Second item
+    - Third item
+
+    # Code block
+
+      ```
+      {
+        "firstName": "John",
+        "lastName": "Smith",
+        "age": 25
+      }
+      ```

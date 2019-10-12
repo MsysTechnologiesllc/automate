@@ -56,8 +56,42 @@ service ReportingService {
 		};
 	};
 
-	// should cover /controls
-	// This api is useful for getting a limited list of control items for latest runs. It also honors all reporting filters
+	/*
+List controls
+
+List all controls optionally using filters. This is some more text to see how much stuff
+survives proto compilation.
+
+Here is more text. This is yet more text.
+
+Here is some markdown:
+
+# Table
+| Syntax | Description |
+| --- | --- |
+| Header | Title |
+| Paragraph | Text |
+
+# List
+
+1. First item
+2. Second item
+3. Third item
+
+- First item
+- Second item
+- Third item
+
+# Code block
+
+```
+{
+	"firstName": "John",
+	"lastName": "Smith",
+	"age": 25
+}
+```
+	*/
 	rpc ListControlItems(ControlItemRequest) returns (ControlItems) {
 		option (google.api.http) = {
 			post: "/compliance/reporting/controls"
@@ -70,6 +104,9 @@ service ReportingService {
 		option (chef.automate.api.iam.policy) = {
 			resource: "compliance:reporting:control"
 			action: "compliance:controlItems:list"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			tags: "Compliance Reporting Controls";
 		};
 	};
 
