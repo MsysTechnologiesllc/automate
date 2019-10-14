@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/codes"
 
 	api_v2 "github.com/chef/automate/api/interservice/authz/v2"
+	constants "github.com/chef/automate/components/authz-service/constants/v2"
 	"github.com/chef/automate/components/authz-service/testhelpers"
 	"github.com/chef/automate/lib/grpc/grpctest"
 )
@@ -73,6 +74,7 @@ func TestIntegrationValidateProjectAssignment(t *testing.T) {
 	unauthorizedProjectId := "project-not-authorized"
 	unauthorizedProjectId2 := "project-not-authorized-2"
 	notFoundProjectId := "not-found"
+	unassignedProjectId := constants.UnassignedProjectID
 
 	_, err := ts.Projects.CreateProject(ctx, &api_v2.CreateProjectReq{
 		Id:   authorizedProjectId,
@@ -114,6 +116,42 @@ func TestIntegrationValidateProjectAssignment(t *testing.T) {
 	// if any projects are non-existed, NotFound is returned.
 	// avoids a potentially expensive authz call.
 	cases := map[string]func(*testing.T){
+		// deletes resulting unassigned when not allowed to assign to unassigned
+		// assigns to unassigned when not allowed to assign to unassigned
+		"when assigning (unassigned) is allowed, from unassigned to authorized project": func(t *testing.T) {
+			_, err := cl.ValidateProjectAssignment(ctx, &api_v2.ValidateProjectAssignmentReq{
+				Subjects:    []string{user},
+				NewProjects: []string{authorizedProjectId},
+				OldProjects: []string{},
+			})
+			assert.NoError(t, err)
+		},
+		"when assigning (unassigned) is not allowed, from unassigned to authorized project": func(t *testing.T) {
+			_, err := cl.ValidateProjectAssignment(ctx, &api_v2.ValidateProjectAssignmentReq{
+				Subjects:    []string{user},
+				NewProjects: []string{authorizedProjectId},
+				OldProjects: []string{},
+			})
+			grpctest.AssertCode(t, codes.PermissionDenied, err)
+			assert.Contains(t, err.Error(), unauthorizedProjectId)
+		},
+		"when assigning (unassigned) is allowed, from authorized project to unassigned": func(t *testing.T) {
+			_, err := cl.ValidateProjectAssignment(ctx, &api_v2.ValidateProjectAssignmentReq{
+				Subjects:    []string{user},
+				NewProjects: []string{},
+				OldProjects: []string{authorizedProjectId},
+			})
+			assert.NoError(t, err)
+		},
+		"when assigning (unassigned) is not allowed, from authorized project to unassigned": func(t *testing.T) {
+			_, err := cl.ValidateProjectAssignment(ctx, &api_v2.ValidateProjectAssignmentReq{
+				Subjects:    []string{user},
+				NewProjects: []string{},
+				OldProjects: []string{authorizedProjectId},
+			})
+			grpctest.AssertCode(t, codes.PermissionDenied, err)
+			assert.Contains(t, err.Error(), unassignedProjectId)
+		},
 		"when passed one unauthorized project": func(t *testing.T) {
 			_, err := cl.ValidateProjectAssignment(ctx, &api_v2.ValidateProjectAssignmentReq{
 				Subjects:   []string{user},
