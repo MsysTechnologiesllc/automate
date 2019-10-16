@@ -39,7 +39,7 @@
           }
         ],
         "tags": [
-          "Controls"
+          "Reporting"
         ]
       }
     },
@@ -66,7 +66,7 @@
           }
         ],
         "tags": [
-          "Nodes"
+          "Reporting"
         ]
       }
     },
@@ -94,7 +94,7 @@
           }
         ],
         "tags": [
-          "Nodes"
+          "Reporting"
         ]
       }
     },
@@ -122,7 +122,7 @@
           }
         ],
         "tags": [
-          "Profiles"
+          "Reporting"
         ]
       }
     },
@@ -157,7 +157,7 @@
     "/compliance/reporting/reports": {
       "post": {
         "summary": "List reports",
-        "description": "Lists all reports. Apply an optional filter to return a select group of reports. Supports pagination, filtering, and sorting.\n\n| Sort paramter | Sort value |\n| --- | --- |\n| latest_report.controls.failed.critical | controls_sums.failed.critical |\n| latest_report.controls.failed.total | controls_sums.failed.total |\n| latest_report.end_time (default) | end_time |\n| latest_report.status | status |\n| node_name | node_name.lower |",
+        "description": "Makes a list of reports. Adding a filter makes a list of all node reports that meet the filter criteria. Supports pagination, filtering, and sorting.\n\n| Sort paramter | Sort value |\n| --- | --- |\n| latest_report.controls.failed.critical | controls_sums.failed.critical |\n| latest_report.controls.failed.total | controls_sums.failed.total |\n| latest_report.end_time (default) | end_time |\n| latest_report.status | status |\n| node_name | node_name.lower |",
         "operationId": "ListReports",
         "responses": {
           "200": {
@@ -178,7 +178,7 @@
           }
         ],
         "tags": [
-          "Reports"
+          "Reporting"
         ]
       }
     },
@@ -213,7 +213,7 @@
           }
         ],
         "tags": [
-          "Reports"
+          "Reporting"
         ]
       }
     },
@@ -241,7 +241,7 @@
           }
         ],
         "tags": [
-          "Reports"
+          "Reporting"
         ]
       }
     },

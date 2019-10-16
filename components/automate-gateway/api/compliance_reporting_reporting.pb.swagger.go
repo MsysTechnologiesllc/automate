@@ -42,7 +42,7 @@ func init() {
           }
         ],
         "tags": [
-          "Controls"
+          "Reporting"
         ]
       }
     },
@@ -69,7 +69,7 @@ func init() {
           }
         ],
         "tags": [
-          "Nodes"
+          "Reporting"
         ]
       }
     },
@@ -97,7 +97,7 @@ func init() {
           }
         ],
         "tags": [
-          "Nodes"
+          "Reporting"
         ]
       }
     },
@@ -125,7 +125,7 @@ func init() {
           }
         ],
         "tags": [
-          "Profiles"
+          "Reporting"
         ]
       }
     },
@@ -160,7 +160,7 @@ func init() {
     "/compliance/reporting/reports": {
       "post": {
         "summary": "List reports",
-        "description": "Lists all reports. Apply an optional filter to return a select group of reports. Supports pagination, filtering, and sorting.\n\n| Sort paramter | Sort value |\n| --- | --- |\n| latest_report.controls.failed.critical | controls_sums.failed.critical |\n| latest_report.controls.failed.total | controls_sums.failed.total |\n| latest_report.end_time (default) | end_time |\n| latest_report.status | status |\n| node_name | node_name.lower |",
+        "description": "Makes a list of reports. Adding a filter makes a list of all node reports that meet the filter criteria. Supports pagination, filtering, and sorting.\n\n| Sort paramter | Sort value |\n| --- | --- |\n| latest_report.controls.failed.critical | controls_sums.failed.critical |\n| latest_report.controls.failed.total | controls_sums.failed.total |\n| latest_report.end_time (default) | end_time |\n| latest_report.status | status |\n| node_name | node_name.lower |",
         "operationId": "ListReports",
         "responses": {
           "200": {
@@ -181,7 +181,7 @@ func init() {
           }
         ],
         "tags": [
-          "Reports"
+          "Reporting"
         ]
       }
     },
@@ -216,7 +216,7 @@ func init() {
           }
         ],
         "tags": [
-          "Reports"
+          "Reporting"
         ]
       }
     },
@@ -244,7 +244,7 @@ func init() {
           }
         ],
         "tags": [
-          "Reports"
+          "Reporting"
         ]
       }
     },

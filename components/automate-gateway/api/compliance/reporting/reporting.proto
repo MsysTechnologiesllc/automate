@@ -19,7 +19,7 @@ service ReportingService {
 	/*
 	List reports
 
-	Lists all reports. Apply an optional filter to return a select group of reports. Supports pagination, filtering, and sorting.
+	Makes a list of reports. Adding a filter makes a list of all node reports that meet the filter criteria. Supports pagination, filtering, and sorting.
 
 	| Sort paramter | Sort value |
 	| --- | --- |
@@ -43,7 +43,7 @@ service ReportingService {
 			action: "compliance:reports:list"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			tags: "Reports";
+			tags: "Reporting"
 		};
 	};
 
@@ -91,7 +91,7 @@ service ReportingService {
 			action: "compliance:controlItems:list"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			tags: "Controls";
+			tags: "Reporting";
 		};
 	};
 
@@ -115,7 +115,7 @@ service ReportingService {
 			action: "compliance:reports:get"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			tags: "Reports";
+			tags: "Reporting";
 		};
 	};
 
@@ -160,7 +160,7 @@ service ReportingService {
 			action: "compliance:reportSuggestions:list"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			tags: "Reports";
+			tags: "Reporting";
 		};
 	};
 
@@ -188,7 +188,7 @@ service ReportingService {
 			action: "compliance:reportProfiles:list"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			tags: "Profiles";
+			tags: "Reporting";
 		};
 	};
 
@@ -213,7 +213,7 @@ service ReportingService {
 			action: "compliance:reportNodes:get"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			tags: "Nodes";
+			tags: "Reporting";
 		};
 	};
 
@@ -247,7 +247,7 @@ service ReportingService {
 			action: "compliance:reportNodes:list"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			tags: "Nodes";
+			tags: "Reporting";
 		};
 	};
 
