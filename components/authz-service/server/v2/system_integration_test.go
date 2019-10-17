@@ -78,9 +78,6 @@ func TestIntegrationValidateProjectAssignment(t *testing.T) {
 	notFoundProjectId := "not-found"
 	unassignedProjectId := constants.UnassignedProjectID
 
-	ctx = auth_context.NewOutgoingContext(auth_context.NewContext(ctx,
-		[]string{"team:local:admins"}, []string{}, "*", "*", "pol"))
-
 	_, err := ts.Projects.CreateProject(ctx, &api_v2.CreateProjectReq{
 		Id:   authorizedProjectId,
 		Name: "Project Authorized",
@@ -125,6 +122,10 @@ func TestIntegrationValidateProjectAssignment(t *testing.T) {
 		Members:    []string{assignsAuthorizedAndUnassignedProjUser},
 		Statements: []*api_v2.Statement{&statementUnassigned},
 	}
+
+	ctx = auth_context.NewOutgoingContext(auth_context.NewContext(ctx,
+		[]string{"team:local:admins"}, []string{}, "*", "*", "pol"))
+
 	// force sync refresh to load new policies
 	err = ts.PolicyRefresher.Refresh(ctx)
 	require.NoError(t, err)
@@ -339,61 +340,48 @@ func TestIntegrationFilterAuthorizedProjectsWithSystemPolicies(t *testing.T) {
 	ts := setupWithOPAV2p1(t)
 	defer ts.Shutdown(t, ctx)
 
-	cases := []struct {
-		desc string
-		f    func(*testing.T)
-	}{
-		{"user should only get projects they have non-system level access to", func(t *testing.T) {
-			_, err := ts.Projects.CreateProject(ctx, &api_v2.CreateProjectReq{
-				Id:   "project-1",
-				Name: "name1",
-			})
-			require.NoError(t, err)
-
-			ctx = auth_context.NewOutgoingContext(auth_context.NewContext(ctx,
-				[]string{"team:local:admins"}, []string{}, "*", "*", "pol"))
-
-			statement := api_v2.Statement{
-				Effect:    api_v2.Statement_ALLOW,
-				Resources: []string{"infra:nodes:*"},
-				Actions:   []string{"infra:nodes:get", "infra:nodes:list"},
-				Projects:  []string{"project-1"},
-			}
-			req := api_v2.CreatePolicyReq{
-				Id:         "policy1",
-				Name:       "my favorite policy",
-				Members:    []string{"user:local:alice"},
-				Statements: []*api_v2.Statement{&statement},
-			}
-
-			// force sync refresh to load new policies
-			err = ts.PolicyRefresher.Refresh(ctx)
-			require.NoError(t, err)
-
-			_, err = ts.Policy.CreatePolicy(ctx, &req)
-			require.NoError(t, err)
-
-			// force sync refresh
-			err = ts.PolicyRefresher.Refresh(ctx)
-			require.NoError(t, err)
-
-			resp, err := ts.Authz.FilterAuthorizedProjects(ctx,
-				&api_v2.FilterAuthorizedProjectsReq{
-					Subjects: []string{"user:local:alice"},
-				})
-			require.NoError(t, err)
-
-			assert.ElementsMatch(t, []string{"project-1"}, resp.Projects)
-		}},
-	}
-
-	rand.Shuffle(len(cases), func(i, j int) {
-		cases[i], cases[j] = cases[j], cases[i]
+	_, err := ts.Projects.CreateProject(ctx, &api_v2.CreateProjectReq{
+		Id:   "project-1",
+		Name: "name1",
 	})
+	require.NoError(t, err)
 
-	for _, test := range cases {
-		t.Run(test.desc, test.f)
+	ctx = auth_context.NewOutgoingContext(auth_context.NewContext(ctx,
+		[]string{"team:local:admins"}, []string{}, "*", "*", "pol"))
+
+	statement := api_v2.Statement{
+		Effect:    api_v2.Statement_ALLOW,
+		Resources: []string{"infra:nodes:*"},
+		Actions:   []string{"infra:nodes:get", "infra:nodes:list"},
+		Projects:  []string{"project-1"},
 	}
+	req := api_v2.CreatePolicyReq{
+		Id:         "policy1",
+		Name:       "my favorite policy",
+		Members:    []string{"user:local:alice"},
+		Statements: []*api_v2.Statement{&statement},
+	}
+
+	// force sync refresh to load new policies
+	err = ts.PolicyRefresher.Refresh(ctx)
+	require.NoError(t, err)
+
+	_, err = ts.Policy.CreatePolicy(ctx, &req)
+	require.NoError(t, err)
+
+	// force sync refresh
+	err = ts.PolicyRefresher.Refresh(ctx)
+	require.NoError(t, err)
+
+	t.Run("user should only get projects they have non-system level access to", func(t *testing.T) {
+		resp, err := ts.Authz.FilterAuthorizedProjects(ctx,
+			&api_v2.FilterAuthorizedProjectsReq{
+				Subjects: []string{"user:local:alice"},
+			})
+		require.NoError(t, err)
+
+		assert.ElementsMatch(t, []string{"project-1"}, resp.Projects)
+	})
 }
 
 func TestIntegrationRuleApplyAndList(t *testing.T) {
@@ -727,14 +715,14 @@ func setupWithOPAV2pX(t *testing.T, twoPointOne bool) *testhelpers.TestFramework
 	return tf
 }
 
-func buildCase(isUpdate bool, user string, expectError bool, old, new, allowed []string{}) s testStruct {
-	//desc := fmt.Sprintf("when moving resource from %s to %s with permission on %s", old, new, allowed)
-	return TestStruct{
-		description: desc,
-		subject: user,
-		oldProjects: old,
-		newProjects: new,
-		isUpdate: isUpdate,
-		expectError: expectError,
-	}
-}
+// func buildCase(isUpdate bool, user string, expectError bool, old, new, allowed []string{}) s testStruct {
+// 	//desc := fmt.Sprintf("when moving resource from %s to %s with permission on %s", old, new, allowed)
+// 	return TestStruct{
+// 		description: desc,
+// 		subject: user,
+// 		oldProjects: old,
+// 		newProjects: new,
+// 		isUpdate: isUpdate,
+// 		expectError: expectError,
+// 	}
+// }
