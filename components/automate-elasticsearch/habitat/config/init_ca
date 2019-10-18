@@ -6,7 +6,7 @@ exec 2>&1
 # so we delete and recreate the store on startup
 rm -f "{{pkg.svc_var_path}}/ca.jks"
 
-{{pkgPathFor "core/openjdk13"}}/bin/keytool -importcert \
+{{pkgPathFor "core/openjdk11"}}/bin/keytool -importcert \
   -trustcacerts \
   -file {{pkg.svc_config_path}}/root_ca.crt \
   -alias chefautomaterootca \

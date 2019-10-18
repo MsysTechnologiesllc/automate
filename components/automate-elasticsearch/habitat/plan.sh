@@ -16,7 +16,7 @@ pkg_deps=(
   core/curl # health_check
   core/unzip
   core/grep
-  core/openjdk13
+  core/openjdk11
   chef/automate-platform-tools
 )
 pkg_bin_dirs=(es/bin)
