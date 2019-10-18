@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"path"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"testing"
 
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
@@ -45,13 +45,13 @@ func rootDir() (string, error) {
 	return "", nil
 }
 
-func vendorDir() (string, error) {
-	root, err := rootDir()
-	if err != nil {
-		return "", err
-	}
+// genSrcPathToRelPath takes an in memory protobuf path name and returns the
+// on disk location to the corresponding protobuf.
+func genSrcPathToRelPath(t *testing.T, path string) string {
+	topLevel, err := rootDir()
+	require.NoError(t, err)
 
-	return path.Join(root, "vendor"), nil
+	return fmt.Sprintf("%s/%s", topLevel, strings.TrimPrefix(path, "github.com/chef/automate/"))
 }
 
 // AssertCompiledInUpToDate is an assertion that, given a set of directories
@@ -136,8 +136,6 @@ func AssertAllProtoMethodsAnnotated(t *testing.T, file string, vsnIdentifier str
 // methods.
 func AssertGeneratedPolicyUpToDate(t *testing.T, file string) {
 	t.Helper()
-	vendorDir, err := vendorDir()
-	require.NoError(t, err)
 
 	filesToGen := []string{file}
 	fds, err := ParseProtoFiles(filesToGen)
@@ -162,7 +160,7 @@ func AssertGeneratedPolicyUpToDate(t *testing.T, file string) {
 	defer cleanup()
 
 	for _, generated := range resp.GetFile() {
-		onDisk, err := ioutil.ReadFile(filepath.Join(vendorDir, generated.GetName()))
+		onDisk, err := ioutil.ReadFile(genSrcPathToRelPath(t, generated.GetName()))
 		require.NoError(t, err, "read generated file from disk")
 
 		assertEqualOrOutputDiff(t, generated.GetName(), string(onDisk), generated.GetContent())

@@ -10,8 +10,8 @@ else
 fi
 
 echo "Checking Go Dependencies"
-dep version
-dep ensure -v
+go mod verify
+go mod vendor
 git diff --exit-code --ignore-submodules=all # fail if anything's been changed
 
 echo "Checking automate-deployment binds.txt"

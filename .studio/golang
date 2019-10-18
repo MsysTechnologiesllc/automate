@@ -306,7 +306,7 @@ DOC
 function go_component_make() {
   [[ "$1" == "" ]] && error "Missing component name argument" && return 1
   local component_relpath=$1
-  local component_path="/src/components/$component_relpath"
+  local component_path="/src/$component_relpath"
   shift
   pushd "$component_path" > /dev/null || (echo "invalid component; cannot cd to $component_path" && return 1)
   echo "in $component_path"
