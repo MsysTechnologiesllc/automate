@@ -171,6 +171,9 @@ func generateHabPackageConfig(outBuf io.Writer, habPackages []PackageSpec) error
 	return nil
 }
 
+// getGoDepInfo gets all of the non-standard lib deps and reduces their import
+// paths according to desired reduce rules. This allows us to tailor exactly
+// the depths we want to go for a desired package before rebuildling.
 func getGoDepInfo(path string) (GoDepInfo, error) {
 	path = strings.TrimLeft(path, "/")
 	goPkgPath := fmt.Sprintf("./%s/...", path)
@@ -182,16 +185,16 @@ func getGoDepInfo(path string) (GoDepInfo, error) {
 		return GoDepInfo{}, errors.Wrapf(err, "could not query go dependencies: %s", command.StderrFromError(err))
 	}
 
-	dp := &depParser{}
-	dp.RegisterFilters([]depFilter{
+	dp := &depImportReducer{}
+	dp.RegisterReduceRules([]depImportReduceRule{
 		{reduce: "github.com/chef/automate/api", to: 6},
-		{reduce: "github.com/chef/automate/components/automate-gateway", to: 7},
 		// Many services depend on automate-gateway right now because of some
 		// dependency relations around the debug API and auth. Including deeper
 		// matches helps reduce rebuilds for non-auth changes in the gateway.
 		// If there are cross-component dependencies, we don't look at subdirs
 		// so that people can move code around inside their own projects without
 		// having to constantly update this file.
+		{reduce: "github.com/chef/automate/components/automate-gateway", to: 7},
 		{reduce: "github.com/chef/automate/lib/platform", to: 6},
 		{reduce: "github.com/chef/automate/lib/", to: 5},
 		{reduce: "github.com/chef/automate/components", to: 5},
@@ -200,30 +203,32 @@ func getGoDepInfo(path string) (GoDepInfo, error) {
 		{reduce: "", to: 3}, // everything else gets trimmed to 3
 	}...)
 
-	return dp.Filter(path, deps)
+	return dp.Reduce(path, deps)
 }
 
-type depParser struct {
-	filters []depFilter
+type depImportReducer struct {
+	rules []depImportReduceRule
 }
 
-func (p *depParser) RegisterFilters(f ...depFilter) {
-	filters := append(p.filters, f...)
+func (p *depImportReducer) RegisterReduceRules(f ...depImportReduceRule) {
+	rules := append(p.rules, f...)
 
-	sort.Slice(filters, func(i, j int) bool {
-		// If the pattern isn't set we'll move it to the bottom
-		if filters[i].reduce == "" {
+	sort.Slice(rules, func(i, j int) bool {
+		// If the reduce pattern isn't set we'll move it to the bottom
+		if rules[i].reduce == "" {
 			return false
 		}
 
-		// Longer reduces are matched first
-		return len(strings.Split(filters[i].reduce, "/")) > len(strings.Split(filters[j].reduce, "/"))
+		// Longer reduce strings are matched first
+		return len(strings.Split(rules[i].reduce, "/")) > len(strings.Split(rules[j].reduce, "/"))
 	})
 
-	p.filters = filters
+	p.rules = rules
 }
 
-func (p *depParser) Filter(path, deps string) (GoDepInfo, error) {
+// Reduce the imports paths according to the reduce rules, sort them and uniq
+// them.
+func (p *depImportReducer) Reduce(path, deps string) (GoDepInfo, error) {
 	info := GoDepInfo{}
 
 	scanner := bufio.NewScanner(strings.NewReader(deps))
@@ -238,7 +243,7 @@ func (p *depParser) Filter(path, deps string) (GoDepInfo, error) {
 		parts := strings.Split(line, "/")
 		dep := ""
 
-		for _, f := range p.filters {
+		for _, f := range p.rules {
 			if strings.HasPrefix(line, f.reduce) {
 				if f.to > 0 {
 					dep = strings.Join(parts[0:min(f.to, len(parts))], "/")
@@ -282,8 +287,8 @@ func (p *depParser) Filter(path, deps string) (GoDepInfo, error) {
 	return info, nil
 }
 
-// depFilter is a filter for our depParser.
-type depFilter struct {
+// depImportReduceRule is a filter for our depImportReducer.
+type depImportReduceRule struct {
 	reduce string // the import path to match
 	to     int    // the depth we want to reduce the path to
 }
