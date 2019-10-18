@@ -358,7 +358,7 @@ func TestIntegrationFilterAuthorizedProjectsWithSystemPolicies(t *testing.T) {
 	req := api_v2.CreatePolicyReq{
 		Id:         "policy1",
 		Name:       "my favorite policy",
-		Members:    []string{"user:local:alice"},
+		Members:    []string{"user:local:jane"},
 		Statements: []*api_v2.Statement{&statement},
 	}
 
@@ -376,7 +376,7 @@ func TestIntegrationFilterAuthorizedProjectsWithSystemPolicies(t *testing.T) {
 	t.Run("user should only get projects they have non-system level access to", func(t *testing.T) {
 		resp, err := ts.Authz.FilterAuthorizedProjects(ctx,
 			&api_v2.FilterAuthorizedProjectsReq{
-				Subjects: []string{"user:local:alice"},
+				Subjects: []string{"user:local:jane"},
 			})
 		require.NoError(t, err)
 
@@ -715,8 +715,17 @@ func setupWithOPAV2pX(t *testing.T, twoPointOne bool) *testhelpers.TestFramework
 	return tf
 }
 
-// func buildCase(isUpdate bool, user string, expectError bool, old, new, allowed []string{}) s testStruct {
-// 	//desc := fmt.Sprintf("when moving resource from %s to %s with permission on %s", old, new, allowed)
+// func buildCase(isUpdate bool, user string, expectError bool, old, new, allowed []string{}) testStruct {
+// desc := fmt.Sprintf("when moving resource from %s to %s with permission on %s", old, new, allowed)
+// c := testStruct{
+// 		description: desc,
+// 		subject: user,
+// 		oldProjects: old,
+// 		newProjects: new,
+// 		isUpdate: isUpdate,
+// 		expectError: expectError,
+// }
+// }
 // 	return TestStruct{
 // 		description: desc,
 // 		subject: user,
