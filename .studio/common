@@ -113,6 +113,24 @@ function compile_all_protobuf_components() {
   done
 }
 
+document "verify_all_protobuf_components" <<DOC
+  Verify that all protobuf are up to date
+DOC
+function verify_all_protobuf_components() {
+  install_if_missing core/git git
+
+  if ! compile_all_protobuf_components; then
+    return $?
+  fi
+
+  git add .
+  if ! git diff --staged --exit-code --ignore-submodules=all; then
+    return $?
+  fi
+
+  go_component_make api lint unit
+}
+
 document "link_component_bin" <<DOC
   Link binaries from COMPONENT/cmd/* to /hab/bin
 DOC

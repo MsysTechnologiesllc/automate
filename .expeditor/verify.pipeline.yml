@@ -11,13 +11,7 @@ steps:
   #
   - label: "[codegen] A2 protobufs"
     command:
-      - |
-        hab studio run "source .studiorc &&
-          compile_all_protobuf_components &&
-          git add . &&
-          git diff --staged --exit-code --ignore-submodules=all"
-        cd api
-        make lint unit
+      - hab studio run "source .studiorc && verify_all_protobuf_components"
     timeout_in_minutes: 10
     retry:
       automatic:
