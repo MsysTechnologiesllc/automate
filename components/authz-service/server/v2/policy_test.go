@@ -1023,7 +1023,7 @@ func TestUpdatePolicy(t *testing.T) {
 				Effect:    api_v2.Statement_ALLOW,
 				Resources: []string{"cfgmgmt:delete", "cfgmgmt:list"},
 				Actions:   []string{"cfgmgmt:nodes:*"},
-				Projects:  []string{constants_v2.UnassignedProjectID}, // implicit "all"
+				Projects:  []string{constants_v2.UnassignedProjectID},
 			}
 			req := api_v2.UpdatePolicyReq{
 				Id:         storedPol.ID,
