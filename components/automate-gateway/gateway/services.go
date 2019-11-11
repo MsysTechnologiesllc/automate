@@ -22,6 +22,7 @@ import (
 	pb_cfgmgmt "github.com/chef/automate/api/external/cfgmgmt"
 	pb_data_feed "github.com/chef/automate/api/external/data_feed"
 	pb_data_lifecycle "github.com/chef/automate/api/external/data_lifecycle"
+	pb_infra_proxy "github.com/chef/automate/api/external/infra_proxy"
 	pb_ingest "github.com/chef/automate/api/external/ingest"
 	pb_secrets "github.com/chef/automate/api/external/secrets"
 	"github.com/chef/automate/api/interservice/authn"
@@ -41,7 +42,7 @@ import (
 	pb_eventfeed "github.com/chef/automate/components/automate-gateway/api/event_feed"
 	pb_gateway "github.com/chef/automate/components/automate-gateway/api/gateway"
 	pb_iam_v2 "github.com/chef/automate/components/automate-gateway/api/iam/v2"
-	pb_infra_proxy "github.com/chef/automate/components/automate-gateway/api/infra_proxy"
+	pb_legacy "github.com/chef/automate/components/automate-gateway/api/legacy"
 	pb_license "github.com/chef/automate/components/automate-gateway/api/license"
 	pb_nodes "github.com/chef/automate/components/automate-gateway/api/nodes"
 	pb_nodes_manager "github.com/chef/automate/components/automate-gateway/api/nodes/manager"
@@ -60,6 +61,7 @@ import (
 	handler_teams "github.com/chef/automate/components/automate-gateway/handler/iam/v2/teams"
 	handler_tokens "github.com/chef/automate/components/automate-gateway/handler/iam/v2/tokens"
 	handler_users "github.com/chef/automate/components/automate-gateway/handler/iam/v2/users"
+	handler_infra_proxy "github.com/chef/automate/components/automate-gateway/handler/infra_proxy"
 
 	// anything else
 	"github.com/chef/automate/components/automate-gateway/gateway/middleware"
@@ -316,9 +318,9 @@ func (s *Server) RegisterGRPCServices(grpcServer *grpc.Server) error {
 
 	infraProxyClient, err := clients.InfraProxyClient()
 	if err != nil {
-		return errors.Wrap(err, "create client for secret service")
+		return errors.Wrap(err, "create client for infra proxy service")
 	}
-	pb_infra_proxy.RegisterInfraProxyServer(grpcServer, handler.NewInfraProxyHandler(infraProxyClient))
+	pb_infra_proxy.RegisterInfraProxyServer(grpcServer, handler_infra_proxy.NewInfraProxyHandler(infraProxyClient))
 
 	return nil
 }
