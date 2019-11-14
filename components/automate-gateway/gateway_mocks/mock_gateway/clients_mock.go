@@ -17,6 +17,7 @@ import (
 	"github.com/chef/automate/api/interservice/data_lifecycle"
 	deployment "github.com/chef/automate/api/interservice/deployment"
 	event_feed "github.com/chef/automate/api/interservice/event_feed"
+	service0 "github.com/chef/automate/api/interservice/infra_proxy/service"
 	ingest "github.com/chef/automate/api/interservice/ingest"
 	license_control "github.com/chef/automate/api/interservice/license_control"
 	local_user "github.com/chef/automate/api/interservice/local_user"
@@ -506,4 +507,19 @@ func (m *MockClientsFactory) PurgeClient(service string) (data_lifecycle.PurgeCl
 func (mr *MockClientsFactoryMockRecorder) PurgeClient(string) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PurgeClient", reflect.TypeOf((*MockClientsFactory)(nil).PurgeClient))
+}
+
+// InfraProxyClient mocks base method
+func (m *MockClientsFactory) InfraProxyClient() (service0.InfraProxyClient, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "InfraProxyClient")
+	ret0, _ := ret[0].(service0.InfraProxyClient)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// InfraProxyClient indicates an expected call of InfraProxyClient
+func (mr *MockClientsFactoryMockRecorder) InfraProxyClient() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InfraProxyClient", reflect.TypeOf((*MockClientsFactory)(nil).InfraProxyClient))
 }
