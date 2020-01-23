@@ -7,10 +7,18 @@ import "api/external/common/version/version.proto";
 import "api/interservice/infra_proxy/request/servers.proto";
 import "api/interservice/infra_proxy/request/orgs.proto";
 import "api/interservice/infra_proxy/request/cookbooks.proto";
+import "api/interservice/infra_proxy/request/clients.proto";
+import "api/interservice/infra_proxy/request/roles.proto";
+import "api/interservice/infra_proxy/request/databags.proto";
+import "api/interservice/infra_proxy/request/environments.proto";
 
 import "api/interservice/infra_proxy/response/servers.proto";
 import "api/interservice/infra_proxy/response/orgs.proto";
 import "api/interservice/infra_proxy/response/cookbooks.proto";
+import "api/interservice/infra_proxy/response/clients.proto";
+import "api/interservice/infra_proxy/response/roles.proto";
+import "api/interservice/infra_proxy/response/databags.proto";
+import "api/interservice/infra_proxy/response/environments.proto";
 
 service InfraProxy {
     rpc GetVersion      (chef.automate.api.common.version.VersionInfoRequest) returns (chef.automate.api.common.version.VersionInfo) {};
@@ -32,4 +40,16 @@ service InfraProxy {
     rpc GetCookbooks (chef.automate.domain.infra_proxy.request.Cookbooks) returns (chef.automate.domain.infra_proxy.response.Cookbooks) {};
     rpc GetCookbooksAvailableVersions (chef.automate.domain.infra_proxy.request.CookbooksAvailableVersions) returns (chef.automate.domain.infra_proxy.response.CookbooksAvailableVersions) {};
     rpc GetCookbook  (chef.automate.domain.infra_proxy.request.Cookbook) returns (chef.automate.domain.infra_proxy.response.Cookbook) {};
+
+    rpc GetRoles (chef.automate.domain.infra_proxy.request.Roles) returns (chef.automate.domain.infra_proxy.response.Roles) {};
+    rpc GetRole (chef.automate.domain.infra_proxy.request.Role) returns (chef.automate.domain.infra_proxy.response.Role) {};
+
+    rpc GetDataBags (chef.automate.domain.infra_proxy.request.DataBags) returns (chef.automate.domain.infra_proxy.response.DataBags) {};
+    rpc GetDataBagItem (chef.automate.domain.infra_proxy.request.DataBag) returns (chef.automate.domain.infra_proxy.response.DataBag) {};
+
+    rpc GetEnvironments (chef.automate.domain.infra_proxy.request.Environments) returns (chef.automate.domain.infra_proxy.response.Environments) {};
+    rpc GetEnvironment (chef.automate.domain.infra_proxy.request.Environment) returns (chef.automate.domain.infra_proxy.response.Environment) {};
+
+    rpc GetClients (chef.automate.domain.infra_proxy.request.Clients) returns (chef.automate.domain.infra_proxy.response.Clients) {};
+    rpc GetClient (chef.automate.domain.infra_proxy.request.Client) returns (chef.automate.domain.infra_proxy.response.Client) {};
 }

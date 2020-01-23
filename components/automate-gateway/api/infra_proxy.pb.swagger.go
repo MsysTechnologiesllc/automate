@@ -332,6 +332,72 @@ func init() {
         ]
       }
     },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/clients": {
+      "get": {
+        "operationId": "GetClients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.Clients"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/clients/{name}": {
+      "get": {
+        "operationId": "GetClient",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.Client"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
     "/infra_proxy/servers/{server_id}/orgs/{org_id}/cookbooks": {
       "get": {
         "operationId": "GetCookbooks",
@@ -430,6 +496,216 @@ func init() {
           },
           {
             "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/data_bags/{name}": {
+      "get": {
+        "operationId": "GetDataBags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.DataBags"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/data_bags/{name}/{item}": {
+      "get": {
+        "operationId": "GetDataBagItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.DataBag"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "item",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/environment/{name}": {
+      "get": {
+        "operationId": "GetEnvironment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.Environment"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/environments": {
+      "get": {
+        "operationId": "GetEnvironments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.Environments"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/roles": {
+      "get": {
+        "operationId": "GetRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.Roles"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "InfraProxy"
+        ]
+      }
+    },
+    "/infra_proxy/servers/{server_id}/orgs/{org_id}/roles/{name}": {
+      "get": {
+        "operationId": "GetRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chef.automate.api.infra_proxy.response.Role"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "server_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "org_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -546,6 +822,65 @@ func init() {
         },
         "ip_address": {
           "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.Client": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "client_name": {
+          "type": "string"
+        },
+        "org_name": {
+          "type": "string"
+        },
+        "admin": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "validator": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "certificate": {
+          "type": "string"
+        },
+        "public_key": {
+          "type": "string"
+        },
+        "private_key": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "json_class": {
+          "type": "string"
+        },
+        "chef_type": {
+          "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.ClientListItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.Clients": {
+      "type": "object",
+      "properties": {
+        "clients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/chef.automate.api.infra_proxy.response.ClientListItem"
+          }
         }
       }
     },
@@ -770,6 +1105,33 @@ func init() {
         }
       }
     },
+    "chef.automate.api.infra_proxy.response.DataBag": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.DataBagListItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.DataBags": {
+      "type": "object",
+      "properties": {
+        "data_bags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/chef.automate.api.infra_proxy.response.DataBagListItem"
+          }
+        }
+      }
+    },
     "chef.automate.api.infra_proxy.response.DeleteOrg": {
       "type": "object",
       "properties": {
@@ -783,6 +1145,48 @@ func init() {
       "properties": {
         "server": {
           "$ref": "#/definitions/chef.automate.api.infra_proxy.response.Server"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.Environment": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "chef_type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "json_class": {
+          "type": "string"
+        },
+        "cookbook_versions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.EnvironmentListItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.Environments": {
+      "type": "object",
+      "properties": {
+        "environments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/chef.automate.api.infra_proxy.response.EnvironmentListItem"
+          }
         }
       }
     },
@@ -841,6 +1245,48 @@ func init() {
         },
         "server_id": {
           "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.Role": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "chef_type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "run_list": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "json_class": {
+          "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.RoleListItem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "chef.automate.api.infra_proxy.response.Roles": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/chef.automate.api.infra_proxy.response.RoleListItem"
+          }
         }
       }
     },
